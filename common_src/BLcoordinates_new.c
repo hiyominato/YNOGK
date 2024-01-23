@@ -130,7 +130,7 @@ static void mucos_set( ptcl *this )
 		this->period_wp = two * this->half_period_wp;
 
 		/* equation (33) in Yang & Wang (2012). */
-		if ( muobs != this->mu_tp1 ) {
+		if ( muobs < this->mu_tp1 ) {
 			tinf = b0 / ( four*( muobs - this->mu_tp1 ) ) + b1 / four;
 			weierstrass_int_J3( tinf, infinity, this->gdd, this->gdel, a4, b4, 
 					index_p4, rff_p, integ4, cases);
@@ -374,12 +374,12 @@ double radius_preparation( ptcl *this, double p )
 		this->rg2 = g2;
 		this->rg3 = g3;
 		/* equation (39) in Yang & Wang (2012). */
-		if ( robs - this->r_tp1 != zero )
+		if ( robs - this->r_tp1 > zero )
 			tinf = b0 / four / ( robs - this->r_tp1 ) + b1 / four;
 		else
 			tinf = infinity;
 
-		if ( this->rhorizon - this->r_tp1 != zero ) 
+		if ( this->rhorizon - this->r_tp1 > zero ) 
 			thorizon = b1 / four + b0 / four / ( this->rhorizon - this->r_tp1 );
 		else
 			thorizon = infinity;
@@ -676,12 +676,12 @@ double radius_settings( ptcl *p )
 		p->rg3 = one / 16.0 * ( 3.0 * p->rb0 * p->rb1 * p->rb2 - 2.0 * sq3(p->rb1) - sq(p->rb0) * p->rb3 );
 
 		/* equation (39) in Yang & Wang (2012). */
-		if ( p->robs - p->r_tp1 != zero )
+		if ( p->robs - p->r_tp1 > zero )
 			p->tinf = p->rb0 / four / ( p->robs - p->r_tp1 ) + p->rb1 / four;
 		else
 			p->tinf = infinity;
 
-		if ( p->rhorizon - p->r_tp1 != zero ) 
+		if ( p->rhorizon - p->r_tp1 > zero ) 
 			p->thorizon = p->rb1 / four + p->rb0 / four / ( p->rhorizon - p->r_tp1 );
 		else
 			p->thorizon = infinity;
@@ -1151,17 +1151,17 @@ double r2p( ptcl *p, double rend, int t1, int t2 )
 		p->rg3 = one / 16.0 * ( 3.0 * p->rb0 * p->rb1 * p->rb2 - 2.0 * sq3(p->rb1) - sq(p->rb0) * p->rb3 );
 
 		/* equation (39) in Yang & Wang (2012). */
-		if ( p->robs - p->r_tp1 != zero )
+		if ( p->robs - p->r_tp1 > zero )
 			p->tinf = p->rb0 / four / ( p->robs - p->r_tp1 ) + p->rb1 / four;
 		else
 			p->tinf = infinity;
 
-		if ( p->rhorizon - p->r_tp1 != zero ) 
+		if ( p->rhorizon - p->r_tp1 > zero ) 
 			p->thorizon = p->rb1 / four + p->rb0 / four / ( p->rhorizon - p->r_tp1 );
 		else
 			p->thorizon = infinity;
 
-		if ( rend - p->r_tp1 != zero ) 
+		if ( rend - p->r_tp1 > zero ) 
 			p->tp = p->rb1 / four + p->rb0 / four / ( rend - p->r_tp1 );
 		else
 			p->tp = infinity;

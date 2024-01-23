@@ -173,7 +173,7 @@ void SPHERICALMOTION_BL( ptcl *pt, double p, double theta_max, double kp,
 	root3( zero, -g2/four, -g3/four, dd, &del );
 
 	// equations (30) of Yang and Wang (2013).
-	if ( pt->muobs != pt->mu_tp1 )
+	if ( pt->muobs < pt->mu_tp1 )
 		tobs = b0 / four / ( pt->muobs - pt->mu_tp1 ) + b1 / four;
 	else
 		tobs = infinity;
@@ -181,7 +181,7 @@ void SPHERICALMOTION_BL( ptcl *pt, double p, double theta_max, double kp,
 	tp1 = infinity;
 	tp2 = b0 / four / ( pt->mu_tp2 - pt->mu_tp1 ) + b1 / four;
 	//equations (72)-(73) of Yang and Wang (2013).
-	if ( pt->mu_tp1 - one != zero ) {
+	if ( pt->mu_tp1 - one < zero ) {
 		c_m = b0 / ( four * sq( - one - pt->mu_tp1 ) );
 		c_add = b0 / ( four * sq( one - pt->mu_tp1 ) );
 		a_m = b0 / four / ( - one - pt->mu_tp1 ) + b1 / four;
@@ -437,7 +437,7 @@ static void Spherical_motion_Settings( ptcl *pt, double theta_max, double kt )
 	root3( zero, -g2/four, -g3/four, dd, &del );
 
 	// equations (30) of Yang and Wang (2013).
-	if ( pt->muobs != pt->mu_tp1 )
+	if ( pt->muobs < pt->mu_tp1 )
 		tobs = b0 / four / ( pt->muobs - pt->mu_tp1 ) + b1 / four;
 	else
 		tobs = infinity;
@@ -445,7 +445,7 @@ static void Spherical_motion_Settings( ptcl *pt, double theta_max, double kt )
 	tp1 = infinity;
 	tp2 = b0 / four / ( pt->mu_tp2 - pt->mu_tp1 ) + b1 / four;
 	//equations (72)-(73) of Yang and Wang (2013).
-	if ( pt->mu_tp1 - one != zero ) {
+	if ( pt->mu_tp1 - one < zero ) {
 		c_m = b0 / ( four * sq( - one - pt->mu_tp1 ) );
 		c_add = b0 / ( four * sq( one - pt->mu_tp1 ) );
 		a_m = b0 / four / ( - one - pt->mu_tp1 ) + b1 / four;

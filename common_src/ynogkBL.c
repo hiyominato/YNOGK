@@ -81,7 +81,7 @@ void YNOGK( ptcl *p, double pm, double *radi, double *mu, double *phi,
         rotate = false;
  
 
-	if ( fabs( p->muobs ) != one ) {
+	if ( fabs( p->muobs ) < one ) {
 		// equation (74) of Yang & Wang (2012).
 		*phi = - ( phi_r + phi_t );
 		if ( p->f1234[3] == zero )
@@ -99,7 +99,7 @@ void YNOGK( ptcl *p, double pm, double *radi, double *mu, double *phi,
 		if ( *phi != zero )
 			rotate = true;
  
-		if ( Rab != zero ) {
+		if ( Rab > zero ) {
 			// a muobs was multiplied to control the rotate direction
 			if ( ( p->f1234[3] >= zero) && ( p->f1234[2] > zero) )
 				*phi = p->muobs * *phi + asin( p->f1234[2] / Rab );
@@ -196,7 +196,7 @@ void YNOGKC( ptcl *p, double pm )
         rotate = false;
  
 
-	if ( fabs( p->muobs ) != one ) {
+	if ( fabs( p->muobs ) < one ) {
 		// equation (74) of Yang & Wang (2012).
 		p->phi_p = - ( phi_r + phi_t );
 		if ( p->f1234[3] == zero )
@@ -214,7 +214,7 @@ void YNOGKC( ptcl *p, double pm )
 		if ( p->phi_p != zero )
 			rotate = true;
  
-		if ( Rab != zero ) {
+		if ( Rab > zero ) {
 			// a muobs was multiplied to control the rotate direction
 			if ( ( p->f1234[3] >= zero) && ( p->f1234[2] > zero) )
 				p->phi_p = p->muobs * p->phi_p + asin( p->f1234[2] / Rab );

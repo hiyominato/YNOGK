@@ -90,7 +90,7 @@ int mutp( ptcl* this )
 				this->mu_reals = 2;
 			}
 		} else {
-			if ( fabs( this->muobs ) != one ) {
+			if ( fabs( this->muobs ) < one ) {
 				if ( this->q <= zero ) {
 					if ( this->f1234[2] != zero ) {
 				        	this->mu_tp2 = sqrt(- this->q )
@@ -109,7 +109,7 @@ int mutp( ptcl* this )
 			} else {
 				this->mu_tp1 = one;
 				if ( this->q <= zero && ( sq( this->f1234[2] ) + 
-				sq( this->f1234[3] ) ) != zero ) {
+				sq( this->f1234[3] ) ) > zero ) {
 					this->mu_tp2 = sqrt( - this->q )
 						/ fabs( this->a_spin );
 					this->mu_reals = 4;
@@ -374,12 +374,12 @@ double mu2p( ptcl * p, double mu, int t1, int t2 )
 	g3 = one / 16.0 * ( three * b0 * b1 * b2 - two * sq3(b1) - sq(b0) * b3 );
 
 	//equation (30) in Yang & Wang (2012).
-	if ( fabs( mu - p->mu_tp1 ) != zero )
+	if ( fabs( mu - p->mu_tp1 ) > zero )
 		tposition = b0 / ( four * ( mu - p->mu_tp1 ) ) + b1 / four;
 	else
 		tposition = infinity;
 
-	if ( p->muobs != p->mu_tp1 ) 
+	if ( p->muobs < p->mu_tp1 ) 
 		tinf = b0 / four / ( p->muobs - p->mu_tp1 ) + b1 / four;
 	else
 		tinf = infinity;  

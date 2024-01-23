@@ -175,13 +175,13 @@ int Integration_Theta_part( ptcl *pt, double p, double *phit, double *timet,
 	root3( zero, -g2/four, -g3/four, dd, &del );
  
 	// equation (30) in Yang & Wang (2012). 
-	if ( muobs != mu_tp1)
+	if ( muobs < mu_tp1)
 		tobs = b0 / four / ( muobs - mu_tp1 ) + b1 / four;
 	else
 		tobs = infinity;
 
 
-	if ( mu_tp1 - one != zero) {
+	if ( mu_tp1 - one < zero) {
 		// equation (64) in Yang & Wang (2012). 
 		Wmum = b0 / ( eight * sq( - one - mu_tp1 ) );
 		Wmup = b0 / ( eight * sq( one - mu_tp1 ) );
@@ -425,13 +425,13 @@ int Integration_Theta_part_Settings( ptcl *pt )
 	root3( zero, -g2/four, -g3/four, dd, &del );
  
 	// equation (30) in Yang & Wang (2012). 
-	if ( muobs != mu_tp1)
+	if ( muobs < mu_tp1)
 		tobs = b0 / four / ( muobs - mu_tp1 ) + b1 / four;
 	else
 		tobs = infinity;
 
 
-	if ( mu_tp1 != one ) {
+	if ( mu_tp1 < one ) {
 		// equation (64) in Yang & Wang (2012). 
 		Wmum = b0 / ( eight * sq( - one - mu_tp1 ) );
 		Wmup = b0 / ( eight * sq( one - mu_tp1 ) );
