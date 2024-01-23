@@ -558,7 +558,12 @@ double radius_preparation( ptcl *this, double p )
 					dr = - fabs((sqrt(robs*(robs+6.0))+(three+two*robs)/sqrt3)/ 
 							(three-robs))*exp(three*sqrt3*p)+two/sqrt3;
 					if ( p != zero )
+					{
+						if ( isinf( dr ) == 0 )
 						this->radius = (three+cr*dr+sqrt(9.0+6.0*cr*dr+ cr*cr))/(dr*dr-one);
+						else
+							this->radius = three;
+					}
 					else
 						this->radius = this->robs; //infinity;
 
@@ -571,7 +576,12 @@ double radius_preparation( ptcl *this, double p )
 				        PI0 = log(fabs((sqrt(robs*(robs+6.0))+(three+two*robs)/sqrt3)/ 
 				                      (robs-three)))/three/sqrt3-log(one+two/sqrt3)/three/sqrt3;
 				        if ( p < PI0 )
+				        {
+				            if ( isinf( dr ) == 0 )
 				            this->radius = (three+cr*dr+sqrt(9.0+6.0*cr*dr+cr*cr))/(dr*dr-one);
+				            else
+				                this->radius = three;
+				        }
 				        else
 				            this->radius = infinity;
 				        this->sign_pr = one;
@@ -984,8 +994,13 @@ static double radius_tmp( ptcl *p, double pem )
 					tmp1 = cr * exp( three * sqrt3 * pem ) - sqrt3;
 					tmp2 = dr * exp( three * sqrt3 * pem ) + two / sqrt3;
 					if ( pem != zero )
+					{
+						if ( isinf( dr ) == 0 )
 						p->radius = ( three + tmp1 * tmp2 + sqrt( 9.0 + 6.0 * tmp1 * tmp2
 							+ tmp1 * tmp1 ) ) / ( tmp2 * tmp2 - one );
+						else
+							p->radius = three;
+					}
 					else
 						p->radius = p->robs; //infinity;
 
@@ -995,8 +1010,13 @@ static double radius_tmp( ptcl *p, double pem )
 					tmp2 = dr * exp( - three * sqrt3 * pem ) + two / sqrt3;
 
 					if ( pem < PI0 )
+					{
+						if ( isinf( dr ) == 0 )
 						p->radius = ( three + tmp1 * tmp2 + sqrt( 9.0 + 6.0 * tmp1 * tmp2
 							+ tmp1 * tmp1 ) ) / ( tmp2 * tmp2 - one );
+						else
+							p->radius = three;
+					}
 					else
 						p->radius = infinity;
 					p->sign_pr = one;
