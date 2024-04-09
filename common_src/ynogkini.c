@@ -232,7 +232,7 @@ static void Get_t1_t2_old( double p, double f1234r, int robs_eq_rtp, double pp,
 				goto here;
 		}
 	}
-here:
+here:;
 	//tt1 = *t1;
 	//tt2 = *t2;
 }
