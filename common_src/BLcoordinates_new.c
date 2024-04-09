@@ -22,7 +22,6 @@
 #include "BLcoordinates_new.h"
  
  
-static double b0, b1, b2, b3, g2, g3;
 static double u, v, w, L1, L2, m2;
 static double u2, v2, w2;
 static double sn, cn, dn;
