@@ -17,6 +17,8 @@
  * 2022-11-22   Starting the writting of the module.
  */
 
+#ifndef PARTICLE_H
+#define PARTICLE_H
 
 /*typedef struct
 {
@@ -64,8 +66,6 @@ typedef struct
 } ini_parats;
 
 
-#ifndef PARTICLE_H
-#define PARTICLE_H
        
 #include "ellCarlsons.h"
  
