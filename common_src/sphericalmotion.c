@@ -265,8 +265,8 @@ gooutfor:
 	// *****pp part***************************************
 	if ( pt->lambda != zero ) {
 		cases_int = 2;
-		weierstrass_int_J3(tobs,tmu,dd,del,-a_add,b4,index_p5,abs(pp),integ5,cases_int);
-		weierstrass_int_J3(tobs,tmu,dd,del,-a_m,b4,index_p5,abs(pp),integ15,cases_int);
+		weierstrass_int_J3(tobs,tmu,dd,del,-a_add,b4,index_p5,fabs(pp),integ5,cases_int);
+		weierstrass_int_J3(tobs,tmu,dd,del,-a_m,b4,index_p5,fabs(pp),integ15,cases_int);
 		// equations (21) (72) of Yang and Wang (2013).
 		pp_phi = ( pp / ( one- pt->mu_tp12 ) + (integ5[2] * c_add
 			- integ15[2] * c_m ) / two ) * pt->lambda + c_phi * pp;
@@ -274,7 +274,7 @@ gooutfor:
 		pp_phi = c_phi * pp;
 
 	cases_int = 4;
-	weierstrass_int_J3(tobs,tmu,dd,del,h,b4,index_p5,abs(pp),integ,cases_int);
+	weierstrass_int_J3(tobs,tmu,dd,del,h,b4,index_p5,fabs(pp),integ,cases_int);
 	// equations (20) (71) of Yang and Wang (2013).
 	pp_sig = ( pp * pt->mu_tp12 + integ[2] * pt->mu_tp1 * b0 / two + integ[4] * b0 * b0
 			/ sixteen ) * pt->a2 + pt->r2 * pp;
