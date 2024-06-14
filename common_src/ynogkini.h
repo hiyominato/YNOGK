@@ -36,9 +36,9 @@
  
 /*void Set_Initializations_For_Integrations_of_R_Part( ptcl * p );*/
 
-/* void Get_R_Integral_Situations( ptcl *p, double pem );
+// void Get_R_Integral_Situations( ptcl *p, double pem );
 void Integral_r_part( ptcl * p, double pm, double *affr, 
-		double *timer, double *phir ); */
+		double *timer, double *phir );
 
 
 

@@ -56,9 +56,6 @@ static double PI1_p, PI2_p;
 static double PI1_phi, PI2_phi;
 static double PI1_time, PI2_time;
 /*****************************************************************************/
-static void Get_mu_t1_t2_New( double p, double f12342, int mobseqmtp, 
-	double p_mt1_mt2, double muobs, double mu_tp1, 
-	double mu_tp2, int *t1, int *t2 );
 /*****************************************************************************/
 
 /*
@@ -493,7 +490,7 @@ int Integration_Theta_part_Settings( ptcl *pt )
 !* To determine the number of time_0 N_t1, N_t2 that the particle meets the
 !* two turn points mu_tp1, mu_tp2 
 !*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-static void Get_mu_t1_t2_New( double p, double f12342, int mobseqmtp, double p_mt1_mt2, 
+void Get_mu_t1_t2_New( double p, double f12342, int mobseqmtp, double p_mt1_mt2, 
 		double muobs, double mu_tp1, double mu_tp2, int *t1, int *t2 )
 {
 	double p1_temp, p2_temp;

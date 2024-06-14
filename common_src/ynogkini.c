@@ -103,8 +103,6 @@ static double half_periodwp, periodwp;
 static double x, y;
 //********************************************
  
-static void Integral_r_part( ptcl * p, double pm, double *affr, 
-				double *timer, double *phir );
 
 
 /*
@@ -1138,7 +1136,7 @@ static void Get_Results_of_Integrations_For_R_Part( ptcl * p, double pm,
 !*
 !*
 !*/
-static void Integral_r_part( ptcl * p, double pm, double *affr, double *timer, double *phir )
+void Integral_r_part( ptcl * p, double pm, double *affr, double *timer, double *phir )
 {
 	double pp_aff, pp_phi, pp_time, time_temp;
 	double p1_aff, p1_phi, p1_time;
