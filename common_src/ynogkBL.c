@@ -85,7 +85,12 @@ void YNOGK( ptcl *p, double pm, double *radi, double *mu, double *phi,
 		// equation (74) of Yang & Wang (2012).
 		*phi = - ( phi_r + phi_t );
 		if ( p->f1234[3] == zero )
-			*phi = *phi + ( tm1 + tm2 ) * pi;
+		{
+			if (p->mu_tp1 == one)
+				*phi += tm1 * pi;
+			if (p->mu_tp2 == -one)
+				*phi += tm2 * pi;
+		}
 
 		*phi = fmod( *phi, twopi );
 		if ( *phi < zero )
@@ -94,7 +99,11 @@ void YNOGK( ptcl *p, double pm, double *radi, double *mu, double *phi,
 		//printf( "phi2 = %f 2pi = %f \n", phi_r, phi_t );
 	} else {
 		// equation (74) of Yang & Wang (2012).
-		*phi = - ( phi_t + phi_r + ( tm1 + tm2 ) * pi );
+		*phi = - ( phi_t + phi_r );
+		if (p->mu_tp1 == one)
+			*phi += tm1 * pi;
+		if (p->mu_tp2 == -one)
+			*phi += tm2 * pi;
 		Rab = sqrt( sq( p->f1234[3] ) + sq( p->f1234[2] ) );
 		if ( *phi != zero )
 			rotate = true;
@@ -200,7 +209,12 @@ void YNOGKC( ptcl *p, double pm )
 		// equation (74) of Yang & Wang (2012).
 		p->phi_p = - ( phi_r + phi_t );
 		if ( p->f1234[3] == zero )
-			p->phi_p = p->phi_p + ( tm1 + tm2 ) * pi;
+		{
+			if (p->mu_tp1 == one)
+				p->phi_p += tm1 * pi;
+			if (p->mu_tp2 == -one)
+				p->phi_p += tm2 * pi;
+		}
 
 		p->phi_p = fmod( p->phi_p, twopi );
 		if ( p->phi_p < zero )
@@ -209,7 +223,11 @@ void YNOGKC( ptcl *p, double pm )
 		//printf( "phi2 = %f 2pi = %f \n", phi_r, phi_t );
 	} else {
 		// equation (74) of Yang & Wang (2012).
-		p->phi_p = - ( phi_t + phi_r + ( tm1 + tm2 ) * pi );
+		p->phi_p = - ( phi_t + phi_r );
+		if (p->mu_tp1 == one)
+			p->phi_p += tm1 * pi;
+		if (p->mu_tp2 == -one)
+			p->phi_p += tm2 * pi;
 		Rab = sqrt( sq( p->f1234[3] ) + sq( p->f1234[2] ) );
 		if ( p->phi_p != zero )
 			rotate = true;
