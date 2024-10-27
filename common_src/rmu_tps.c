@@ -230,7 +230,6 @@ int radiustp( ptcl * this )
 				this->cases = 1;
 				this->robs_eq_rtp = true;
 				printf("radiustp(): p_r_LNRF === ', f12341, robs, rbb");
-				exit(0);
 			} else {
 				if( this->robs >= creal( this->rbb[2] ) && 
 				this->robs <= creal( this->rbb[3] ) ) {

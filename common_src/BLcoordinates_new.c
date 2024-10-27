@@ -236,7 +236,7 @@ double mucos_tmp( ptcl *this, double p )
 
 		if( mucos  <  this->mu_tp2) {
 			//printf("mucos = %f \n  mu_tp2 = %f \n", mucos, this->mu_tp2);
-			exit(0);
+			return this->mu_tp2;
 		}
 	} 
 	return (mucos);
