@@ -79,144 +79,144 @@ static double sinobs_1;
 !*
 !*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 !*/  
-static void mucos_set( ptcl *this )
+static void mucos_set( ptcl *th )
 {
-	f12342 = this->f1234[2];
-	lam2 = this->lam2;
-	q = this->q;
-	muobs = this->muobs;
-	a_spin = this->a_spin;
-	a2 = this->a2;
+	f12342 = th->f1234[2];
+	lam2 = th->lam2;
+	q = th->q;
+	muobs = th->muobs;
+	a_spin = th->a_spin;
+	a2 = th->a2;
               
 	/* spin is zero. */
 	if ( a_spin == zero ) {
 		if ( q > zero ) {
-			this->AA = sqrt( ( lam2 + q ) / q );
-			this->BB = sqrt( q );
+			th->AA = sqrt( ( lam2 + q ) / q );
+			th->BB = sqrt( q );
 		}
 	} else {
 		int cases;
 
-		mutp( this );
+		mutp( th );
 
 		a4 = zero;
 		b4 = one;
 		/* equations (26)-(29) in Yang & Wang (2012). */
-		b0 = - four * a2 * this->mutp3 + two * this->mu_tp1 * (a2 - lam2 - q);
-		b1 = - two * a2 * this->mutp2 + one / three * (a2 - lam2 - q);
-		b2 = - four / three * a2 * this->mu_tp1;
+		b0 = - four * a2 * th->mutp3 + two * th->mu_tp1 * (a2 - lam2 - q);
+		b1 = - two * a2 * th->mutp2 + one / three * (a2 - lam2 - q);
+		b2 = - four / three * a2 * th->mu_tp1;
 		b3 = - a2;
 
-		this->b0 = b0;
-		this->b1 = b1;
+		th->b0 = b0;
+		th->b1 = b1;
 
 		/* equation (31) in Yang & Wang (2012). */
 		g2 = three / four * ( sq(b1) - b0*b2 );
 		g3 = one / 16.0 * ( three * b0 * b1 * b2 - two * sq3(b1) - sq(b0) * b3 );
-		this->g2 = g2;
-		this->g3 = g3;
+		th->g2 = g2;
+		th->g3 = g3;
 
-		root3( zero, -g2/four, -g3/four, this->gdd, &this->gdel );
+		root3( zero, -g2/four, -g3/four, th->gdd, &th->gdel );
 		index_p4[1] = 0;
 		cases = 1;
 
-		tinf = b0 / ( four*( this->mu_tp2 - this->mu_tp1 ) ) + b1 / four;
-		weierstrass_int_J3( tinf, infinity, this->gdd, this->gdel, a4, b4,
+		tinf = b0 / ( four*( th->mu_tp2 - th->mu_tp1 ) ) + b1 / four;
+		weierstrass_int_J3( tinf, infinity, th->gdd, th->gdel, a4, b4,
 					index_p4, rff_p, integ4, cases );
 
-		this->half_period_wp = integ4[1];
+		th->half_period_wp = integ4[1];
 		//pp0 = halfperiodwp(g2, g3, dd, del) 
-		this->period_wp = two * this->half_period_wp;
+		th->period_wp = two * th->half_period_wp;
 
 		/* equation (33) in Yang & Wang (2012). */
-		if ( muobs < this->mu_tp1 ) {
-			tinf = b0 / ( four*( muobs - this->mu_tp1 ) ) + b1 / four;
-			weierstrass_int_J3( tinf, infinity, this->gdd, this->gdel, a4, b4, 
+		if ( muobs < th->mu_tp1 ) {
+			tinf = b0 / ( four*( muobs - th->mu_tp1 ) ) + b1 / four;
+			weierstrass_int_J3( tinf, infinity, th->gdd, th->gdel, a4, b4, 
 					index_p4, rff_p, integ4, cases);
-			this->fzero = integ4[1];
+			th->fzero = integ4[1];
 
 		} else
-                  	this->fzero=zero;
+                  	th->fzero=zero;
 
 		if ( f12342 < zero )
-			this->fzero = - this->fzero; 
+			th->fzero = - th->fzero; 
 	}
 }
 
 
 /*     C VERSION:  Yang Xiao-lin    2022-12-01.   */
-double mucos_tmp( ptcl *this, double p )
+double mucos_tmp( ptcl *th, double p )
 {
 	double mucos, f12343, f12342, muobs, a_spin, q; 
 	double u;
  
 
 
-	f12342 = this->f1234[2];
-	f12343 = this->f1234[3];
-	q = this->q;
-	muobs = this->muobs;
-	a_spin = this->a_spin; 
+	f12342 = th->f1234[2];
+	f12343 = th->f1234[3];
+	q = th->q;
+	muobs = th->muobs;
+	a_spin = th->a_spin; 
 
 	if ( (f12343 == zero) && (f12342 == zero) && (fabs(muobs) == one) ) {
 		/* this is because that mu==1 for ever,this because */
 		/* that Theta_mu=-a^2(1-mu^2). So, mu must = +1 or -1 */
 		/* for ever, and q=-a^2, X=lambda/sin(theta)=0 .*/
 		/* So Theta_mu=q+a^2mu^2-X^2mu^4=-a^2(1-mu^2) */
-		this->sign_pth = zero;   
+		th->sign_pth = zero;   
 		return muobs;
 	}              
 	/* spin is zero. */
 	if ( a_spin == zero ) {
 		if ( q > zero ) {
 			if ( f12342 < zero ) {
-				u = asin( muobs * this->AA ) + p * this->BB * this->AA;
+				u = asin( muobs * th->AA ) + p * th->BB * th->AA;
 				/* mucos=dsin(asin(muobs*this->AA) + 
 				p*this->BB*this->AA)/this->AA */
-				mucos = sin( u ) / this->AA;
+				mucos = sin( u ) / th->AA;
 				u = fmod( u + halfpi, twopi );
 				if ( zero <= u && u <= pi )
-					this->sign_pth = - one;
+					th->sign_pth = - one;
 				else
-					this->sign_pth = one;
+					th->sign_pth = one;
 			} else {
 				if ( f12342 == zero ) {
-					u = p * this->AA * this->BB;
+					u = p * th->AA * th->BB;
 					mucos = cos( u ) * muobs;
 					u = fmod(u, twopi);
 					if ( zero <= u && u <= pi )
-						this->sign_pth = sign( one, muobs );
+						th->sign_pth = sign( one, muobs );
 					else
-						this->sign_pth = - sign( one, muobs );
+						th->sign_pth = - sign( one, muobs );
 				} else {
-					u = asin( muobs * this->AA ) - p * this->BB * this->AA;
+					u = asin( muobs * th->AA ) - p * th->BB * th->AA;
 					/* mucos=dsin(dasin(muobs*this->AA) - 
 					p*this->AA*this->BB)/this->AA */
-					mucos = sin( u ) / this->AA;
+					mucos = sin( u ) / th->AA;
 					u = fmod(u - halfpi, twopi);
 					if ( -pi <= u && u <= zero )
-						this->sign_pth = one;
+						th->sign_pth = one;
 					else
-						this->sign_pth = -one;     
+						th->sign_pth = -one;     
 				}
 			}
 		} else {
-			this->sign_pth = zero;
+			th->sign_pth = zero;
 			mucos = muobs;
 		}
 	} else {
 		/* Equatorial plane motion. */
 		if ( muobs == zero && q == zero ) {
-			this->sign_pth = zero;
+			th->sign_pth = zero;
 			mucos = zero;
 			return (mucos);
 		} 
  
 		/* equation (32) in Yang & Wang (2012). */
-		u = p + this->fzero;
-		mucos = this->mu_tp1 + this->b0 / ( four * 
-			weierstrassP( u, this->g2, this->g3, this->gdd, 
-					this->gdel ) - this->b1 );
+		u = p + th->fzero;
+		mucos = th->mu_tp1 + th->b0 / ( four * 
+			weierstrassP( u, th->g2, th->g3, th->gdd, 
+					th->gdel ) - th->b1 );
 
 		/*printf("t1 = %f \n  t2 = %f \n, b0 =  %f \n, b1 =  %f \n ", 
 			this->mu_tp1, this->mu_tp2,  this->b0, this->b1 );
@@ -225,18 +225,18 @@ double mucos_tmp( ptcl *this, double p )
 					this->gdel ));*/
 
 		if ( u <= zero )
-			this->sign_pth = -one;
+			th->sign_pth = -one;
 		else {
-			u = fmod(u, this->period_wp);
-			if ( u <= this->half_period_wp )
-				this->sign_pth = one;
+			u = fmod(u, th->period_wp);
+			if ( u <= th->half_period_wp )
+				th->sign_pth = one;
 			else
-				this->sign_pth = - one;
+				th->sign_pth = - one;
 		}
 
-		if( mucos  <  this->mu_tp2) {
+		if( mucos  <  th->mu_tp2) {
 			//printf("mucos = %f \n  mu_tp2 = %f \n", mucos, this->mu_tp2);
-			return this->mu_tp2;
+			return th->mu_tp2;
 		}
 	} 
 	return (mucos);
@@ -321,7 +321,7 @@ mu_restarting:
 !*     C VERSION:  Yang Xiao-lin    2022-12-03.
 !*
 !*/
-double radius_preparation( ptcl *this, double p )
+double radius_preparation( ptcl *th, double p )
 {
 	double f1234r, lambda, q, a_spin, robs;
 	double up, a2, lam2;
@@ -342,159 +342,159 @@ double radius_preparation( ptcl *this, double p )
 		, half_periodwp, periodwp, p_ini_r_tp2 */
 
 
-	f1234r = this->f1234[1];
-	lambda = this->lambda;
-	lam2 = this->lam2;
-	q = this->q;
-	a_spin = this->a_spin;
-	a2 = this->a2;
-	robs = this->robs;
+	f1234r = th->f1234[1];
+	lambda = th->lambda;
+	lam2 = th->lam2;
+	q = th->q;
+	a_spin = th->a_spin;
+	a2 = th->a2;
+	robs = th->robs;
 
 	a4 = zero;
 	b4 = one;
 	cc = a2 - lam2 - q;
-	this->robs_eq_rtp = false;
-	this->indrhorizon = false;
+	th->robs_eq_rtp = false;
+	th->indrhorizon = false;
 
-	radiustp( this );
+	radiustp( th );
 
-	if (this->r_reals != 0 ) {
+	if (th->r_reals != 0 ) {
 		/* equations (35)-(38) in Yang & Wang (2012). */
-		b0 = four * sq3(this->r_tp1) + two * (a2 - lam2 - q ) * this->r_tp1 + 
+		b0 = four * sq3(th->r_tp1) + two * (a2 - lam2 - q ) * th->r_tp1 + 
 			two * ( q + sq( lambda - a_spin ) );
-		b1 = two * sq(this->r_tp1) + one / three * ( a2 - lam2 - q );
-		b2 = four / three * this->r_tp1;
+		b1 = two * sq(th->r_tp1) + one / three * ( a2 - lam2 - q );
+		b2 = four / three * th->r_tp1;
 		b3 = one;
 		g2 = three / four * ( sq(b1) - b0 * b2 );
 		g3 = one / 16.0 * ( 3.0 * b0 * b1 * b2 - 2.0 * sq3(b1) - sq(b0) * b3 );
 
-		this->rb0 = b0;
-		this->rb1 = b1;
-		this->rg2 = g2;
-		this->rg3 = g3;
+		th->rb0 = b0;
+		th->rb1 = b1;
+		th->rg2 = g2;
+		th->rg3 = g3;
 		/* equation (39) in Yang & Wang (2012). */
-		if ( robs - this->r_tp1 > zero )
-			tinf = b0 / four / ( robs - this->r_tp1 ) + b1 / four;
+		if ( robs - th->r_tp1 > zero )
+			tinf = b0 / four / ( robs - th->r_tp1 ) + b1 / four;
 		else
 			tinf = infinity;
 
-		if ( this->rhorizon - this->r_tp1 > zero ) 
-			thorizon = b1 / four + b0 / four / ( this->rhorizon - this->r_tp1 );
+		if ( th->rhorizon - th->r_tp1 > zero ) 
+			thorizon = b1 / four + b0 / four / ( th->rhorizon - th->r_tp1 );
 		else
 			thorizon = infinity;
 
-		tp2 = b0 / four / ( this->r_tp2 - this->r_tp1 ) + b1 / four;
+		tp2 = b0 / four / ( th->r_tp2 - th->r_tp1 ) + b1 / four;
 		tinf1 = b1 / four;
 
-		root3( zero, -g2/four, -g3/four, this->rdd, &this->rdel );
+		root3( zero, -g2/four, -g3/four, th->rdd, &th->rdel );
 
 		index_p4[1] = 0;
 		cases_int = 1;
 
 		/* equation (42) in Yang & Wang (2012). */
-		weierstrass_int_J3( tinf, infinity, this->rdd, this->rdel, zero, one, 
+		weierstrass_int_J3( tinf, infinity, th->rdd, th->rdel, zero, one, 
 				index_p4, rff_p, integ04, cases_int );
 		PI0 = integ04[1];
 
-		if ( this->cases == 1 ) {  /* in this case, r_tp2 = infinity */
-			if ( !this->indrhorizon ) {
+		if ( th->cases == 1 ) {  /* in this case, r_tp2 = infinity */
+			if ( !th->indrhorizon ) {
 				if ( f1234r  <  zero ) {
 					weierstrass_int_J3( tinf1, infinity, 
-						this->rdd, this->rdel, zero, one, 
+						th->rdd, th->rdel, zero, one, 
 						index_p4, rff_p, integ14, cases_int );
 
 					PI0_total = PI0 + integ14[1];
 					if ( p < PI0_total ) {
 						/* equation (41) in Yang & Wang (2012).*/
-						this->radius = this->r_tp1 + b0 / ( four * 
+						th->radius = th->r_tp1 + b0 / ( four * 
 							weierstrassP( p - PI0, g2, g3, 
-							this->rdd, this->rdel )- b1 );
+							th->rdd, th->rdel )- b1 );
 						if ( p < PI0 )
-							this->sign_pr = -one;
+							th->sign_pr = -one;
 						else
-							this->sign_pr = one;
+							th->sign_pr = one;
 					} else {
-						this->radius = infinity;  /* Goto infinity, far away. */
-						this->sign_pr = one;
+						th->radius = infinity;  /* Goto infinity, far away. */
+						th->sign_pr = one;
 					}
 				} else {
-					weierstrass_int_J3( tinf1, tinf, this->rdd, this->rdel, zero, one,
+					weierstrass_int_J3( tinf1, tinf, th->rdd, th->rdel, zero, one,
 						index_p4, rff_p, integ04, cases_int );
 					PI0_inf_obs = integ04[1];
 					if ( p < PI0_inf_obs ) 
 						/* equation (41) in Yang & Wang (2012). */
-						this->radius=this->r_tp1+b0/(four * 
-						weierstrassP(p + PI0, g2, g3, this->rdd, this->rdel)-b1);
+						th->radius=th->r_tp1+b0/(four * 
+						weierstrassP(p + PI0, g2, g3, th->rdd, th->rdel)-b1);
 				        else
-						this->radius=infinity;  /*Goto infinity, far away.*/
-				        this->sign_pr = one;
+						th->radius=infinity;  /*Goto infinity, far away.*/
+				        th->sign_pr = one;
 				}
 			} else {
 				if ( f1234r < zero ) {
-					weierstrass_int_J3(tinf,thorizon, this->rdd, this->rdel, zero, one,
+					weierstrass_int_J3(tinf,thorizon, th->rdd, th->rdel, zero, one,
 				                           index_p4,rff_p,integ04, cases_int);
 				        PI0_obs_hori = integ04[1];
 				        if ( p < PI0_obs_hori )
 						/* equation (41) in Yang & Wang (2012). */
-						this->radius = this->r_tp1+b0/(four*
-						weierstrassP(p - PI0,g2,g3, this->rdd, this->rdel)-b1);
+						th->radius = th->r_tp1+b0/(four*
+						weierstrassP(p - PI0,g2,g3, th->rdd, th->rdel)-b1);
 				        else
-						this->radius = this->rhorizon;  /*Fall into black hole. */
-				        this->sign_pr = -one;
+						th->radius = th->rhorizon;  /*Fall into black hole. */
+				        th->sign_pr = -one;
 				} else {
-					weierstrass_int_J3(tinf1,tinf, this->rdd, this->rdel, zero, one, 
+					weierstrass_int_J3(tinf1,tinf, th->rdd, th->rdel, zero, one, 
 						index_p4,rff_p,integ04,cases_int);
 					PI0_inf_obs = integ04[1];
 				        if ( p < PI0_inf_obs )
 					/* equation (41) in Yang & Wang (2012). */
-						this->radius=this->r_tp1 + b0 /
-						(four*weierstrassP(p + PI0,g2,g3, this->rdd, this->rdel)-b1);
+						th->radius=th->r_tp1 + b0 /
+						(four*weierstrassP(p + PI0,g2,g3, th->rdd, th->rdel)-b1);
 				        else
-						this->radius=infinity; /*Goto infinity, far away.*/
-				        this->sign_pr = one;
+						th->radius=infinity; /*Goto infinity, far away.*/
+				        th->sign_pr = one;
 				}
 			}
-		} else if ( this->cases == 2 ) {   //  case(2)
-			if ( !this->indrhorizon ) {
+		} else if ( th->cases == 2 ) {   //  case(2)
+			if ( !th->indrhorizon ) {
 				if ( f1234r < zero ) 
 					PI01 = - PI0;
 				else
 					PI01 = PI0;
 				/* equation (41) in Yang & Wang (2012). */
-				this->radius = this->r_tp1 + b0 / ( four* weierstrassP( p + PI01, 
-					g2, g3, this->rdd, this->rdel ) - b1 );
+				th->radius = th->r_tp1 + b0 / ( four* weierstrassP( p + PI01, 
+					g2, g3, th->rdd, th->rdel ) - b1 );
 				/*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 				// this part of the code aims on obtaining the sign of the r component of  
 				// 4-momentum of the photon.                                               
 				//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-				weierstrass_int_J3(tp2,infinity, this->rdd, this->rdel,a4,b4,          /**/
+				weierstrass_int_J3(tp2,infinity, th->rdd, th->rdel,a4,b4,          /**/
 							index_p4,rff_p,integ14,cases_int);             /**/
-				this->half_periodwp = integ14[1];                                            /**/
-				this->periodwp = two * this->half_periodwp;                                        /**/
+				th->half_periodwp = integ14[1];                                            /**/
+				th->periodwp = two * th->half_periodwp;                                        /**/
 				if (f1234r > zero) {                                                   /**/
-					up = fmod(p + PI01, this->periodwp);                                    /**/
-					if ( up <= this->half_periodwp )                                       /**/
-						this->sign_pr = one;                                                /**/
+					up = fmod(p + PI01, th->periodwp);                                    /**/
+					if ( up <= th->half_periodwp )                                       /**/
+						th->sign_pr = one;                                                /**/
 					else                                                             /**/
-						this->sign_pr = - one;                                              /**/
+						th->sign_pr = - one;                                              /**/
 				} else if (f1234r < zero) {                                              /**/
-					up = fmod(p + PI01 + this->half_periodwp, this->periodwp);              /**/
-					if (up < this->half_periodwp)                                          /**/
-						this->sign_pr = -one;                                               /**/
+					up = fmod(p + PI01 + th->half_periodwp, th->periodwp);              /**/
+					if (up < th->half_periodwp)                                          /**/
+						th->sign_pr = -one;                                               /**/
 					else                                                             /**/
-						this->sign_pr = one;                                               /**/
+						th->sign_pr = one;                                               /**/
 				} else {                                                                  /**/
-					if (robs == this->r_tp1) {                                              /**/
-						if ( fmod(p, this->periodwp) <= this->half_periodwp )                     /**/
-							this->sign_pr = one;                                            /**/
+					if (robs == th->r_tp1) {                                              /**/
+						if ( fmod(p, th->periodwp) <= th->half_periodwp )                     /**/
+							th->sign_pr = one;                                            /**/
 						else                                                         /**/
-							this->sign_pr = -one;                                    /**/
+							th->sign_pr = -one;                                    /**/
 					} else {                                                             /**/ 
-						if ( fmod(p + this->half_periodwp, this->periodwp)                       /**/
-				                                   <= this->half_periodwp )                    /**/
-							this->sign_pr = one;                           /**/
+						if ( fmod(p + th->half_periodwp, th->periodwp)                       /**/
+				                                   <= th->half_periodwp )                    /**/
+							th->sign_pr = one;                           /**/
 						else                                                         /**/
-							this->sign_pr = -one;                            /**/ 
+							th->sign_pr = -one;                            /**/ 
 				        }                                                            /**/
 				}                                                                /**/
 			/*============================================================================
@@ -502,34 +502,34 @@ double radius_preparation( ptcl *this, double p )
 			!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 			} else {
 				if( f1234r <= zero ) {
-					weierstrass_int_J3( tinf, thorizon, this->rdd, this->rdel, zero, one,
+					weierstrass_int_J3( tinf, thorizon, th->rdd, th->rdel, zero, one,
 				                           index_p4, rff_p, integ14, cases_int);
 					PI0_obs_hori = integ14[1]; 
 					if ( p < PI0_obs_hori )
 					/* equation (41) in Yang & Wang (2012). */
-						this->radius = this->r_tp1 + b0 / ( four * 
-						weierstrassP( p - PI0, g2, g3, this->rdd, this->rdel) - b1 );
+						th->radius = th->r_tp1 + b0 / ( four * 
+						weierstrassP( p - PI0, g2, g3, th->rdd, th->rdel) - b1 );
 					else
-						this->radius = this->rhorizon; //Fall into black hole
-				        this->sign_pr = -one;
+						th->radius = th->rhorizon; //Fall into black hole
+				        th->sign_pr = -one;
 				} else {
-					weierstrass_int_J3( tp2, thorizon, this->rdd, this->rdel, a4, b4, index_p4, 
+					weierstrass_int_J3( tp2, thorizon, th->rdd, th->rdel, a4, b4, index_p4, 
 						rff_p,integ14,cases_int);
-					weierstrass_int_J3( tp2, tinf, this->rdd, this->rdel, a4, b4, 
+					weierstrass_int_J3( tp2, tinf, th->rdd, th->rdel, a4, b4, 
 						index_p4, rff_p, integ4, cases_int);
-					this->p_ini_r_tp2 = integ4[1];
+					th->p_ini_r_tp2 = integ4[1];
 					PI0_total_2 = integ14[1] + integ4[1];
 					if ( p < PI0_total_2 )
 						// equation (41) in Yang & Wang (2012). 
-						this->radius = this->r_tp1 + b0 / ( four * 
-						weierstrassP( p + PI0, g2, g3, this->rdd, this->rdel ) - b1 );
+						th->radius = th->r_tp1 + b0 / ( four * 
+						weierstrassP( p + PI0, g2, g3, th->rdd, th->rdel ) - b1 );
 				        else
-						this->radius = this->rhorizon; //Fall into black hole. 
+						th->radius = th->rhorizon; //Fall into black hole. 
 					//!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-					if (p <= this->p_ini_r_tp2)                  /**/
-						this->sign_pr = one;                       /**/
+					if (p <= th->p_ini_r_tp2)                  /**/
+						th->sign_pr = one;                       /**/
 				        else                                    /**/
-						this->sign_pr = -one;                      /**/                                /**/
+						th->sign_pr = -one;                      /**/                                /**/
 					//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
 				}
 			}
@@ -537,17 +537,17 @@ double radius_preparation( ptcl *this, double p )
 		if ( a_spin == zero ) {
 			if ( cc == zero ) {
 				if ( f1234r < zero ) {
-					if ( p < one / this->rhorizon - one / this->robs )
-						this->radius = this->robs / ( this->robs * p + one );
+					if ( p < one / th->rhorizon - one / th->robs )
+						th->radius = th->robs / ( th->robs * p + one );
 					else
-						this->radius = this->rhorizon;
-					this->sign_pr = -one;
+						th->radius = th->rhorizon;
+					th->sign_pr = -one;
 				} else {
 					if ( p < one/robs )
-						this->radius = this->robs / ( one - this->robs * p );
+						th->radius = th->robs / ( one - th->robs * p );
 					else
-						this->radius = infinity;
-				        this->sign_pr = one;
+						th->radius = infinity;
+				        th->sign_pr = one;
 				}
 			}
 			if ( cc == -27.0 ) {
@@ -559,14 +559,14 @@ double radius_preparation( ptcl *this, double p )
 					if ( p != zero )
 					{
 						if ( robs == three )
-							this->radius = three;
+							th->radius = three;
 						else
-						this->radius = (three+cr*dr+sqrt(9.0+6.0*cr*dr+ cr*cr))/(dr*dr-one);
+						th->radius = (three+cr*dr+sqrt(9.0+6.0*cr*dr+ cr*cr))/(dr*dr-one);
 					}
 					else
-						this->radius = this->robs; //infinity;
+						th->radius = th->robs; //infinity;
 
-				        this->sign_pr = - one;
+				        th->sign_pr = - one;
 				} else {
 				        cr = -three*fabs((sqrt(robs*(robs+6.0))+(three+two*robs)/sqrt3)/ 
 				                      (three-robs))*exp(-three*sqrt3*p)-sqrt3;
@@ -577,27 +577,27 @@ double radius_preparation( ptcl *this, double p )
 				        if ( p < PI0 )
 						{
 							if ( robs == three )
-								this->radius = three;
+								th->radius = three;
 							else
-				            this->radius = (three+cr*dr+sqrt(9.0+6.0*cr*dr+cr*cr))/(dr*dr-one);
+				            th->radius = (three+cr*dr+sqrt(9.0+6.0*cr*dr+cr*cr))/(dr*dr-one);
 						}
 				        else
-				            this->radius = infinity;
-				        this->sign_pr = one;
+				            th->radius = infinity;
+				        th->sign_pr = one;
 				}
 			}
 		}
 	} else {
-            u=creal(this->rbb[4]);
-            w=fabs( cimag(this->rbb[4]));
-            v=fabs( cimag(this->rbb[2]));
+            u=creal(th->rbb[4]);
+            w=fabs( cimag(th->rbb[4]));
+            v=fabs( cimag(th->rbb[2]));
             if (u != zero) {
 // equation (45) in Yang & Wang (2012). 
                 L1=(four*u*u+w*w+v*v+sqrt(sq(four*u*u+w*w+v*v)-four*w*w*v*v))/(two*w*w);
                 L2=(four*u*u+w*w+v*v-sqrt(sq(four*u*u+w*w+v*v)-four*w*w*v*v))/(two*w*w);
 // equation (46) in Yang & Wang (2012). 
-                thorizon=sqrt((L1-one)/(L1-L2))*(this->rhorizon-u*(L1+one)/
-                                  (L1-one))/sqrt(sq(this->rhorizon-u)+w*w);
+                thorizon=sqrt((L1-one)/(L1-L2))*(th->rhorizon-u*(L1+one)/
+                                  (L1-one))/sqrt(sq(th->rhorizon-u)+w*w);
 // equation (48) in Yang & Wang (2012). 
                 m2=(L1-L2)/L1;
                 tinf=sqrt((L1-one)/(L1-L2))*(robs-u*(L1+one)/
@@ -610,37 +610,37 @@ double radius_preparation( ptcl *this, double p )
                     PI0=pinf-EllipticF(thorizon,m2)/(w*sqrt(L1));
                     if (p < PI0) 
 // equation (49) in Yang & Wang (2012), and p_r <0, r=r_{+}
-                        this->radius=u+(-two*u+w*(L1-L2)*sn*fabs(cn))/((L1-L2)*sn*sn-(L1-one));
+                        th->radius=u+(-two*u+w*(L1-L2)*sn*fabs(cn))/((L1-L2)*sn*sn-(L1-one));
                     else
-                        this->radius=this->rhorizon; 
-                    this->sign_pr = - one;
+                        th->radius=th->rhorizon; 
+                    th->sign_pr = - one;
                 } else {
                     PI0 = EllipticF(t_inf,m2)/(w*sqrt(L1))-pinf;
                     if ( p < PI0 ) 
 // equation (49) in Yang & Wang (2012), and p_r >0, r=r_{-}
-                        this->radius=u+(-two*u-w*(L1-L2)*sn*fabs(cn))/((L1-L2)*sn*sn-(L1-one));
+                        th->radius=u+(-two*u-w*(L1-L2)*sn*fabs(cn))/((L1-L2)*sn*sn-(L1-one));
                     else
-                        this->radius=infinity; 
-                    this->sign_pr = one;
+                        th->radius=infinity; 
+                    th->sign_pr = one;
 		}
             } else {
 		        if (f1234r < zero) {
-		            if ( p < ( tan(robs/w)- tan(this->rhorizon/w))/w ) 
-		                this->radius=w*tan( tan(robs/w)-p*w);
+		            if ( p < ( tan(robs/w)- tan(th->rhorizon/w))/w ) 
+		                th->radius=w*tan( tan(robs/w)-p*w);
 		            else
-		                this->radius=this->rhorizon; 
-		            this->sign_pr = - one;
+		                th->radius=th->rhorizon; 
+		            th->sign_pr = - one;
 		        } else {
 		            if(p < (pi/two- tan(robs/w))/w) 
-		                this->radius=w*tan( tan(robs/w)+p*w);
+		                th->radius=w*tan( tan(robs/w)+p*w);
 		            else
-		                this->radius=infinity;
-		            this->sign_pr = one;
+		                th->radius=infinity;
+		            th->sign_pr = one;
 			}
 		}
 	}
 
-	return this->radius;
+	return th->radius;
 }
 
 

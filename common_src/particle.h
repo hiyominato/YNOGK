@@ -223,24 +223,24 @@ extern double scal; */
 ptcl* particle_new();
 
 
-void particle_construct( ptcl *this, double a_spin, double rini, 
+void particle_construct( ptcl *th, double a_spin, double rini, 
 		double mucos, double sinobs, double scal, double * );
 
-void Set_alphabeta( ptcl *this, double alpha, double beta );
-void Set_alpha( ptcl *this, double alpha );
-void Set_beta( ptcl *this, double beta );
+void Set_alphabeta( ptcl *th, double alpha, double beta );
+void Set_alpha( ptcl *th, double alpha );
+void Set_beta( ptcl *th, double beta );
 
 
 void lambdaq( ptcl *th );
 void show_lambdaq( ptcl *th );
 
-void ini_direction2lamdaq( ptcl *this, double pr, double ptheta, double pphi );
-void metricg( ptcl *this );
+void ini_direction2lamdaq( ptcl *th, double pr, double ptheta, double pphi );
+void metricg( ptcl *th );
 int metricgij( double robs, double muobs, double sinobs, double a_spin, 
 	double *somiga, double *expnu, double *exppsi, double *expmu1, double *expmu2 );
-void center_of_image( ptcl *this );
+void center_of_image( ptcl *th );
 
-void transport_data_out( ptcl *this, out_data * od );
+void transport_data_out( ptcl *th, out_data * od );
 
 
 double rms( double a_spin );

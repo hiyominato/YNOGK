@@ -27,8 +27,8 @@
 #include "particle.h"
 
 
-int mutp( ptcl* this );
-int radiustp( ptcl * this );
+int mutp( ptcl* th );
+int radiustp( ptcl * th );
  
 double mu2p( ptcl * p, double mu, int t1, int t2 );
 double mu2p_Schwarzschild( ptcl *p, double mu, int t1, int t2 );

@@ -34,11 +34,11 @@ typedef struct {
 
 
 //void mucos_set( ptcl *this );
-double mucos( ptcl *this, double p );
+double mucos( ptcl *th, double p );
 
 //double radius_preparation( ptcl *this, double p );
 double radius_settings( ptcl *p );
-double radius( ptcl *this, double p );
+double radius( ptcl *th, double p );
 double r2p( ptcl *p, double rend, int t1, int t2 );
 //double radius( ptcl *p, double pem, int first );
  
