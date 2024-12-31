@@ -20,6 +20,9 @@
  * 2022-11-16   Finished the fisrt writting of the module.
  */
 
+#include <math.h>
+#include <stdio.h>
+#include "ConstantsUnits.h"
 #include "pemfindingUnit.h"
 
 

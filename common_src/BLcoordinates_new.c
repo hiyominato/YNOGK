@@ -22,6 +22,7 @@
 #include <complex.h>
 #endif
 
+#include "ellCarlsons.h"
 #include "BLcoordinates_new.h"
  
  
