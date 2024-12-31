@@ -14,8 +14,15 @@
  * 2022-11-16   Finished the fisrt writting of the module.
  */
 
+#ifndef _MSC_VER
+#include <complex.h>
+#endif
+
 #include "root34.h"
 
+#ifndef I
+#define I (1.0fi)
+#endif
 
 /*
 !* PURPOSE:  This subroutine aim on sorting a1, a2, a3 by decreasing way.

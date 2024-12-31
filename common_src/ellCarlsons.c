@@ -12,6 +12,9 @@
  * 2022-11-20   Starting the writting of the module.
  */
 
+#ifndef _MSC_VER
+#include <complex.h>
+#endif
 
 #include <ellCarlsons.h> 
 

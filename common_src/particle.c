@@ -17,6 +17,9 @@
  * 2022-11-22   Starting the writting of the module.
  */
 
+#ifndef _MSC_VER
+#include <complex.h>
+#endif
 
 #include "particle.h"
  

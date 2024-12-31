@@ -16,7 +16,10 @@
  */
  
 
+#ifndef _MSC_VER
 #include <complex.h>
+#endif
+
 #include <math.h>
 #include <stdlib.h>
 #include <stdio.h>

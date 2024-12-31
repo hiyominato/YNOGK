@@ -4,8 +4,13 @@
 #include <math.h>
 #include "ConstantsUnits.h"
 #include <stdlib.h>
-#include <complex.h>
 #include <stdio.h>
+
+#ifdef _MSC_VER
+double creal(double _Complex);
+double cimag(double _Complex);
+double _Complex csqrt(double _Complex);
+#endif
 
 void sort( double a1, double a2, double a3, double *s);
 int root3(double b, double c, double d, double _Complex *roots, unsigned int *del);

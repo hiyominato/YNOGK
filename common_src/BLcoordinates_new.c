@@ -18,6 +18,9 @@
  */
 
  
+#ifndef _MSC_VER
+#include <complex.h>
+#endif
 
 #include "BLcoordinates_new.h"
  

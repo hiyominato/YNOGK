@@ -15,6 +15,8 @@
 #define ELLFUNCTIONS_H
  
  
+double creal(double _Complex);
+double cimag(double _Complex);
 
 void sncndn(double uu, double emmc, double *sn, double *cn, double *dn);
 int sncndn1(double uu, double emmc, double *sn, double *cn, double *dn);
