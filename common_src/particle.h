@@ -223,7 +223,7 @@ ptcl* particle_new();
 
 
 void particle_construct( ptcl *th, double a_spin, double rini, 
-		double mucos, double sinobs, double scal, double * );
+		double mucos, double sinobs, double scal, const double * );
 
 void Set_alphabeta( ptcl *th, double alpha, double beta );
 void Set_alpha( ptcl *th, double alpha );
