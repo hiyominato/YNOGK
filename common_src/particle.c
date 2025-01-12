@@ -32,7 +32,7 @@ ptcl* particle_new() {
 
 
 void particle_construct( ptcl *this, double a_spin, double rini, 
-		double mucos, double sinobs, double scal, double *Vobs )
+		double mucos, double sinobs, double scal, const double *Vobs )
 {
 	this->a_spin = a_spin;
 	this->a2 = sq( this->a_spin );
