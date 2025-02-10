@@ -13,6 +13,14 @@
  */
 
 
+#if defined(_MSC_VER) && !defined(_C_COMPLEX_T)
+#define _C_COMPLEX_T
+typedef double _Complex _C_double_complex;
+typedef float _Complex _C_float_complex;
+typedef long double _Complex _C_ldouble_complex;
+#endif
+ 
+#include <complex.h>
 #include <ellCarlsons.h> 
 
 

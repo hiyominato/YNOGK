@@ -4,7 +4,6 @@
 #include <math.h>
 #include "ConstantsUnits.h"
 #include <stdlib.h>
-#include <complex.h>
 #include <stdio.h>
 
 void sort( double a1, double a2, double a3, double *s);

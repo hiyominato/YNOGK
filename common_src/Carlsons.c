@@ -16,7 +16,6 @@
 
 #include "root34.h"
 
-#include <complex.h>
 #include <math.h>
 #include "ConstantsUnits.h"
 #include <stdlib.h>
